@@ -7,6 +7,7 @@ repositories {
 
 tasks {
     create("deploy") {
+        group = "build"
         dependsOn(gradle.includedBuild("crowdproj-autoversion-plugin").task(":deploy"))
     }
 }
