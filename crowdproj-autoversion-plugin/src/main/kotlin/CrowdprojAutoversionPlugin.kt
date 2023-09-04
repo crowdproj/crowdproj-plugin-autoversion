@@ -11,6 +11,7 @@ import org.gradle.kotlin.dsl.repositories
 class CrowdprojAutoversionPlugin : Plugin<Project> {
     private lateinit var grgit: Grgit
     private lateinit var releaseRe: Regex
+    private var newVersion: String? = null
 
     override fun apply(project: Project) = project.run {
         val cwpExtension = extensions.create<CrowdprojAutoversionPluginExtension>("autoversion")
@@ -30,6 +31,7 @@ class CrowdprojAutoversionPlugin : Plugin<Project> {
             releaseRe = cwpExtension.releaseRe.getOrElse(defaultReleaseRe)
             computeVersion()?.also {
                 println("COMPUTED VERSION $it")
+                newVersion = it
                 version = it
                 println("PROJECT VERSION is set to $it")
             }
