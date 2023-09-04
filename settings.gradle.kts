@@ -6,7 +6,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = "crowdproj-plugin-autoversion"
+rootProject.name = "crowdproj-plugin-autoversion-root"
 
 includeBuild("crowdproj-autoversion-plugin")
 include("crowdproj-autoversion-test")
