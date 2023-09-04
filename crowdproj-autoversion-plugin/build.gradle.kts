@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.crowdproj.plugin.autoversion"
-version = "0.0.2"
+version = "0.0.3"
 
 repositories {
     mavenCentral()
@@ -32,7 +32,7 @@ gradlePlugin {
             displayName = "CrowdProj Autoversion Gradle plugin"
             description = "This plugin automatically increments version of the project for branches like release/1.2"
             @Suppress("UnstableApiUsage")
-            tags.set(listOf("gradle", "crowdproj", "kotlin", "version", "git", "gitflow"))
+            tags.set(listOf("crowdproj", "kotlin", "version", "git", "gitflow"))
             implementationClass = "com.crowdproj.plugin.autoversion.CrowdprojAutoversionPlugin"
             version = project.version
         }
