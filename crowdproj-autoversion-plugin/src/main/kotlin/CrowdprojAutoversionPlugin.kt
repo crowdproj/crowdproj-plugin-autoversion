@@ -25,6 +25,23 @@ class CrowdprojAutoversionPlugin : Plugin<Project> {
             }
         }
         pluginManager.apply("org.ajoberstar.grgit")
+        val t1 = task("addGitVersionTag") {
+            group = "git"
+            doLast {
+                grgit.tag.add {
+                    name = newVersion
+                }
+            }
+        }
+        task("pushPushVersionTag") {
+            group = "git"
+            dependsOn(t1)
+            doLast {
+                grgit.push {
+                    tags = true
+                }
+            }
+        }
         afterEvaluate {
             println("COMPUTING VERSION")
             grgit = project.extensions.getByType(Grgit::class.java)
