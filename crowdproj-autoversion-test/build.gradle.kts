@@ -20,6 +20,13 @@ autoversion {
 //    releaseRe.set(Regex("^mai(\\w+)$"))
 }
 
+tasks {
+    build {
+        mustRunAfter(addGitVersionTag)
+        mustRunAfter(pushGitVersionTag)
+    }
+}
+
 afterEvaluate {
     println("CURRENT VERSION is ${project.version}")
 }

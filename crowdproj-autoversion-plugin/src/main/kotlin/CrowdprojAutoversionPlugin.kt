@@ -11,6 +11,7 @@ import org.gradle.kotlin.dsl.repositories
 class CrowdprojAutoversionPlugin : Plugin<Project> {
     private lateinit var grgit: Grgit
     private lateinit var releaseRe: Regex
+    private var shouldIncrement: Boolean = true
     private var newVersion: String? = null
 
     override fun apply(project: Project) = project.run {
@@ -33,7 +34,7 @@ class CrowdprojAutoversionPlugin : Plugin<Project> {
                 }
             }
         }
-        task("pushPushVersionTag") {
+        task("pushGitVersionTag") {
             group = "git"
             dependsOn(t1)
             doLast {
@@ -43,14 +44,12 @@ class CrowdprojAutoversionPlugin : Plugin<Project> {
             }
         }
         afterEvaluate {
-            println("COMPUTING VERSION")
             grgit = project.extensions.getByType(Grgit::class.java)
             releaseRe = cwpExtension.releaseRe.getOrElse(defaultReleaseRe)
+            shouldIncrement = cwpExtension.shoudIncrement.getOrElse(true)
             computeVersion()?.also {
-                println("COMPUTED VERSION $it")
                 newVersion = it
                 version = it
-                println("PROJECT VERSION is set to $it")
             }
         }
     }
@@ -70,10 +69,9 @@ class CrowdprojAutoversionPlugin : Plugin<Project> {
                         ?.split(".")
                         ?.map { it.toInt() }
                         ?.toIntArray()
-                    //                                ?.also { println("VERSION: $it") }
                 }
                 .maxWithOrNull(VersionComparator)
-                ?.also { it[it.size - 1]++ }
+                ?.also { if (shouldIncrement) it[it.size - 1]++ }
                 ?.joinToString(".")
                 ?: "$verPref.0"
         }
